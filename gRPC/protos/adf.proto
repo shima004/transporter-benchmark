@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+message Object {
+  int64 id = 1;
+  string name = 2;
+  Priority priority = 3;
+}
+
+message Priority {
+  double value = 1;
+}
+
+message ObjectList {
+  repeated Object objects = 1;
+}
+
+service CallPython {
+  rpc GetSortedObjects(ObjectList) returns (ObjectList) {}
+}
+
