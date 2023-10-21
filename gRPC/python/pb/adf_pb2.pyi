@@ -6,20 +6,10 @@ from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Map
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Object(_message.Message):
-    __slots__ = ["id", "name", "priority"]
-    ID_FIELD_NUMBER: _ClassVar[int]
-    NAME_FIELD_NUMBER: _ClassVar[int]
-    PRIORITY_FIELD_NUMBER: _ClassVar[int]
-    id: int
-    name: str
-    priority: Priority
-    def __init__(self, id: _Optional[int] = ..., name: _Optional[str] = ..., priority: _Optional[_Union[Priority, _Mapping]] = ...) -> None: ...
-
-class Priority(_message.Message):
-    __slots__ = ["value"]
-    VALUE_FIELD_NUMBER: _ClassVar[int]
-    value: float
-    def __init__(self, value: _Optional[float] = ...) -> None: ...
+    __slots__ = ["x"]
+    X_FIELD_NUMBER: _ClassVar[int]
+    x: float
+    def __init__(self, x: _Optional[float] = ...) -> None: ...
 
 class ObjectList(_message.Message):
     __slots__ = ["objects"]

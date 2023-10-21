@@ -1,6 +1,7 @@
 from concurrent import futures
 
 import grpc
+
 from pb import adf_pb2, adf_pb2_grpc
 
 
@@ -8,7 +9,7 @@ class CallPython(adf_pb2_grpc.CallPythonServicer):
     def GetSortedObjects(self, request, context):
         objects = request.objects
         return adf_pb2.ObjectList(
-            objects=sorted(objects, key=lambda x: x.priority.value)
+            objects=sorted(objects, key=lambda x: x.x, reverse=True)
         )
 
 
