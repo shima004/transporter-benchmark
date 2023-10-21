@@ -1,13 +1,10 @@
 syntax = "proto3";
 
-message Object {
-  int64 id = 1;
-  string name = 2;
-  Priority priority = 3;
-}
+option java_package="com.proto.transporter";
+option java_multiple_files=true;
 
-message Priority {
-  double value = 1;
+message Object {
+  double x = 1;
 }
 
 message ObjectList {
@@ -17,4 +14,3 @@ message ObjectList {
 service CallPython {
   rpc GetSortedObjects(ObjectList) returns (ObjectList) {}
 }
-

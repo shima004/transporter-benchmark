@@ -3,12 +3,36 @@
  */
 package adf.grpc;
 
+import java.util.List;
+import java.util.stream.IntStream;
+
+import com.proto.transporter.CallPythonGrpc;
+import com.proto.transporter.Object;
+import com.proto.transporter.ObjectList;
+
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+
 public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
+    final ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 50051).usePlaintext().build();
+    final CallPythonGrpc.CallPythonBlockingStub stub = CallPythonGrpc.newBlockingStub(channel);
 
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        App app = new App();
+        List<Object> requestList = IntStream.range(0, 100).mapToObj(i -> {
+            return Object.newBuilder().setX(Math.random()).build();
+        }).toList();
+        ObjectList request = ObjectList.newBuilder().addAllObjects(requestList).build();
+        ObjectList response = app.getSortedObjects(request);
+        System.out.println(response);
+    }
+
+    public ObjectList getSortedObjects(ObjectList request) {
+        return stub.getSortedObjects(request);
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        channel.shutdown();
     }
 }

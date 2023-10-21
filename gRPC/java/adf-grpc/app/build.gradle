@@ -9,7 +9,12 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
+    // protobuf
+    id 'com.google.protobuf' version '0.9.4'
+    // JMH
+    id "me.champeau.jmh" version "0.7.1"
 }
+
 
 repositories {
     // Use Maven Central for resolving dependencies.
@@ -22,7 +27,16 @@ dependencies {
 
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:31.1-jre'
-}
+
+    // grpc
+    runtimeOnly 'io.grpc:grpc-netty-shaded:1.58.0'
+    implementation 'io.grpc:grpc-protobuf:1.58.0'
+    implementation 'io.grpc:grpc-stub:1.58.0'
+    compileOnly 'org.apache.tomcat:annotations-api:6.0.53' // necessary for Java 9+
+
+    testImplementation 'org.openjdk.jmh:jmh-core:1.36'
+    testImplementation 'org.openjdk.jmh:jmh-generator-annprocess:1.36'
+} 
 
 application {
     // Define the main class for the application.
@@ -32,4 +46,27 @@ application {
 tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+}
+
+jmh {
+    jmhVersion = '1.36'
+    fork = 1
+    iterations = 5
+    warmupIterations = 1
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.22.3"
+    }
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.58.0'
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins { 
+            grpc {}
+        }
+    }
 }
