@@ -1,3 +1,33 @@
+# transpoter grpc implementation
+
+## How to run
+
+#### Python
+
+```bash
+cd ./python
+python server.py
 ```
-  python -m grpc_tools.protoc -I./protos --python_out=./python/pb --pyi_out=./python/pb --grpc_python_out=./python/pb ./protos/adf.proto
+
+#### Java
+
+```bash
+cd ./java/adf-grpc
+./gradlew run
+```
+
+## Benchmark
+
+#### Python
+
+```bash
+cd ./python
+python server.py
+```
+
+#### Java
+
+```bash
+cd ./java/adf-grpc
+./gradlew jmh
 ```
