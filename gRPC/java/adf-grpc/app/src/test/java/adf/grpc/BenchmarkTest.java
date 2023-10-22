@@ -13,12 +13,12 @@ import com.proto.transporter.ObjectList;
 
 @State(Scope.Benchmark)
 public class BenchmarkTest {
-  private App app;
+  private GRPCTranspoter grpcTranspoter;
   private ObjectList testObjectList;
 
   @Setup
   public void setup() {
-    app = new App();
+    grpcTranspoter = new GRPCTranspoter();
     List<Object> requestList = IntStream.range(0, 100).mapToObj(i -> {
       return Object.newBuilder().setX(Math.random()).build();
     }).toList();
@@ -27,6 +27,6 @@ public class BenchmarkTest {
 
   @Benchmark
   public void testBenchmark() {
-    app.getSortedObjects(testObjectList);
+    grpcTranspoter.getSortedObjects(testObjectList);
   }
 }
