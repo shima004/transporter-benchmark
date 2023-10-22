@@ -21,7 +21,7 @@
 
 ## Benchmark(benchmark by jmh)
 
-### gRPC
+### gRPC(wsl2)
 
 ```bash
 Benchmark                     Mode  Cnt     Score     Error  Units
