@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+option java_package="com.proto.transporter";
+option java_multiple_files=true;
+
+message Object {
+  double x = 1;
+}
+
+message ObjectList {
+  repeated Object objects = 1;
+}

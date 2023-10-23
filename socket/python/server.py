@@ -1,5 +1,7 @@
 import socket
 
+from pb.adf_pb2 import ObjectList
+
 
 class BlockingServerBase:
     def __init__(self, timeout: int = 60, buffer: int = 1024):
@@ -24,9 +26,9 @@ class BlockingServerBase:
 
         while True:
             try:
-                message_recv = conn.recv(self.__buffer).decode("utf-8")
+                message_recv = conn.recv(self.__buffer)
                 message_resp = self.respond(message_recv)
-                conn.send(message_resp.encode("utf-8"))
+                conn.send(message_resp)
             except ConnectionResetError:
                 break
             except BrokenPipeError:
@@ -40,12 +42,20 @@ class BlockingServerBase:
 class InetServer(BlockingServerBase):
     def __init__(self, host: str = "0.0.0.0", port: int = 8080) -> None:
         self.server = (host, port)
-        super().__init__(timeout=60, buffer=1024)
+        super().__init__(timeout=60, buffer=8192)
         self.accept(self.server, socket.AF_INET, socket.SOCK_STREAM, 0)
 
     def respond(self, message: str) -> str:
-        print("received -> ", message)
-        return "Server accepted !!"
+        # data deserialization using protoclo buffer
+        message_recv = ObjectList()
+        message_recv.ParseFromString(message)
+        # sorting the list
+        message_resp = ObjectList()
+        message_resp.objects.extend(
+            sorted(message_recv.objects, key=lambda x: x.x)
+        )
+        # data serialization using protocol buffer
+        return message_resp.SerializeToString()
 
 
 if __name__ == "__main__":
