@@ -4,10 +4,15 @@
 package adf.socket;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Arrays;
+import java.util.stream.IntStream;
+
+import com.proto.transporter.Object;
+import com.proto.transporter.ObjectList;
 
 public class App {
     public static void main(String[] args) {
@@ -28,8 +33,22 @@ public class App {
         try {
             while (true) {
                 OutputStream output = socket.getOutputStream();
-                PrintWriter writer = new PrintWriter(output, true);
-                writer.println("Hello, World!");
+                InputStream in = socket.getInputStream();
+                ObjectList request = ObjectList.newBuilder()
+                        .addAllObjects(IntStream.range(0, 100).boxed()
+                                .map(i -> Object.newBuilder().setX(Math.random()).build())
+                                .toList())
+                        .build();
+                // send deserialized object to server
+                byte[] bytes = request.toByteArray();
+                output.write(bytes);
+                // get response from server
+                byte[] recvBytes = new byte[8192];
+                int recvSize = in.read(recvBytes);
+                byte[] message_recv_bytes = Arrays.copyOfRange(recvBytes, 0, recvSize);
+                // デシリアル化する
+                ObjectList message_recv = ObjectList.parseFrom(message_recv_bytes);
+                System.out.println(message_recv);
                 Thread.sleep(1000);
             }
         } catch (InterruptedException ex) {
