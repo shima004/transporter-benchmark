@@ -10,9 +10,10 @@ import com.proto.transporter.ObjectList;
 
 public class App {
     public static void main(String[] args) {
-        SocketTranspoter socketTranspoter = null;
+        BaseSocketTranspoter socketTranspoter = null;
         try {
             socketTranspoter = new SocketTranspoter("localhost", 8080);
+            // socketTranspoter = new UnixDomainSocketTranspoter("/tmp/socket.sock");
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -20,7 +21,6 @@ public class App {
             System.out.println("SocketTranspoter is null");
             return;
         }
-
         try {
             while (true) {
                 ObjectList request = ObjectList.newBuilder()

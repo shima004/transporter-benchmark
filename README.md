@@ -23,7 +23,14 @@
 
 ### gRPC(wsl2)
 
-```bash
+```
 Benchmark                     Mode  Cnt     Score     Error  Units
 BenchmarkTest.testBenchmark  thrpt    5  2043.647 ± 256.875  ops/s
+```
+
+### socket(
+
+```
+Benchmark                     Mode  Cnt     Score      Error  Units
+BenchmarkTest.testBenchmark  thrpt    5  6648.435 ± 1165.103  ops/s
 ```

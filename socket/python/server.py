@@ -1,3 +1,4 @@
+import os
 import socket
 
 from pb.adf_pb2 import ObjectList
@@ -58,5 +59,27 @@ class InetServer(BlockingServerBase):
         return message_resp.SerializeToString()
 
 
+class UnixDomainServer(BlockingServerBase):
+    def __init__(self, path: str = "/tmp/socket.sock") -> None:
+        self.server = path
+        super().__init__(timeout=60, buffer=8192)
+        if os.path.exists(self.server):
+            os.remove(self.server)
+        self.accept(self.server, socket.AF_UNIX, socket.SOCK_STREAM, 0)
+
+    def respond(self, message: str) -> str:
+        # data deserialization using protoclo buffer
+        message_recv = ObjectList()
+        message_recv.ParseFromString(message)
+        # sorting the list
+        message_resp = ObjectList()
+        message_resp.objects.extend(
+            sorted(message_recv.objects, key=lambda x: x.x)
+        )
+        # data serialization using protocol buffer
+        return message_resp.SerializeToString()
+
+
 if __name__ == "__main__":
-    InetServer()
+    # InetServer()
+    UnixDomainServer()

@@ -3,16 +3,21 @@ package adf.socket;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.net.UnixDomainSocketAddress;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 
 import com.proto.transporter.ObjectList;
 
-public class SocketTranspoter extends BaseSocketTranspoter {
+public class UnixDomainSocketTranspoter extends BaseSocketTranspoter {
   Socket socket = null;
 
-  public SocketTranspoter(String host, int port) throws Exception {
+  public UnixDomainSocketTranspoter(String path) throws Exception {
     try {
-      socket = new Socket(host, port);
+      Path unixDomainSocketPath = Paths.get(path);
+      socket = new Socket();
+      socket.connect(UnixDomainSocketAddress.of(unixDomainSocketPath));
     } catch (Exception e) {
       throw e;
     }
@@ -36,11 +41,15 @@ public class SocketTranspoter extends BaseSocketTranspoter {
       byte[] recvBytes = new byte[8192];
       int recvSize = inputStream.read(recvBytes);
       byte[] message_recv_bytes = Arrays.copyOfRange(recvBytes, 0, recvSize);
-      // デシリアル化する
-      ObjectList message_recv = ObjectList.parseFrom(message_recv_bytes);
-      return message_recv;
+      ObjectList response = ObjectList.parseFrom(message_recv_bytes);
+      return response;
     } catch (Exception e) {
       throw e;
+    } finally {
+      // socketをクローズする
+      if (socket != null) {
+        socket.close();
+      }
     }
   }
 }
