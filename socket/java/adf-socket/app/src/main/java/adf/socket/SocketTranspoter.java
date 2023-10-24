@@ -1,10 +1,9 @@
 package adf.socket;
 
 import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.Arrays;
 
 import com.proto.transporter.ObjectList;
 
@@ -22,35 +21,34 @@ public class SocketTranspoter {
     }
   }
 
+  public void close() throws Exception {
+    try {
+      socket.close();
+    } catch (Exception e) {
+      throw e;
+    }
+  }
+
   public ObjectList getSortedObjectList(ObjectList request) throws Exception {
     try {
       // オブジェクトを送信するためのストリームを作成
       OutputStream outputStream = socket.getOutputStream();
-      ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
 
       // オブジェクトを送信
-      objectOutputStream.writeObject(request);
+      outputStream.write(request.toByteArray());
 
       // オブジェクトを受信するためのストリームを作成
       InputStream inputStream = socket.getInputStream();
-      ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
 
       // オブジェクトを受信
-      Object object = objectInputStream.readObject();
-
-      // 受信したオブジェクトがObjectListであることを確認し、キャストして返す
-      if (object instanceof ObjectList) {
-        return (ObjectList) object;
-      } else {
-        throw new Exception("Received object is not ObjectList");
-      }
+      byte[] recvBytes = new byte[8192];
+      int recvSize = inputStream.read(recvBytes);
+      byte[] message_recv_bytes = Arrays.copyOfRange(recvBytes, 0, recvSize);
+      // デシリアル化する
+      ObjectList message_recv = ObjectList.parseFrom(message_recv_bytes);
+      return message_recv;
     } catch (Exception e) {
       throw e;
-    } finally {
-      // socketをクローズする
-      if (socket != null) {
-        socket.close();
-      }
     }
   }
 }

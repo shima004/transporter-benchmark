@@ -9,8 +9,10 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
-
+    // protobuf
     id 'com.google.protobuf' version '0.9.4'
+    // JMH
+    id "me.champeau.jmh" version "0.7.1"
 }
 
 repositories {
@@ -26,6 +28,9 @@ dependencies {
     implementation 'com.google.guava:guava:31.1-jre'
 
     implementation 'com.google.protobuf:protobuf-java:3.24.0'
+
+    testImplementation 'org.openjdk.jmh:jmh-core:1.36'
+    testImplementation 'org.openjdk.jmh:jmh-generator-annprocess:1.36'
 }
 
 application {
@@ -37,3 +42,11 @@ tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
 }
+
+jmh {
+    jmhVersion = '1.36'
+    fork = 1
+    iterations = 5
+    warmupIterations = 1
+}
+

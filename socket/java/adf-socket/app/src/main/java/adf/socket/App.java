@@ -3,12 +3,6 @@
  */
 package adf.socket;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.Arrays;
 import java.util.stream.IntStream;
 
 import com.proto.transporter.Object;
@@ -16,52 +10,37 @@ import com.proto.transporter.ObjectList;
 
 public class App {
     public static void main(String[] args) {
-        Socket socket = null;
+        SocketTranspoter socketTranspoter = null;
         try {
-            socket = new Socket("localhost", 8080);
-        } catch (UnknownHostException ex) {
-            System.out.println("Server not found: " + ex.getMessage());
-        } catch (IOException ex) {
-            System.out.println("I/O error: " + ex.getMessage());
+            socketTranspoter = new SocketTranspoter("localhost", 8080);
+        } catch (Exception e) {
+            System.out.println(e);
         }
-
-        if (socket == null) {
-            System.out.println("Socket is null");
+        if (socketTranspoter == null) {
+            System.out.println("SocketTranspoter is null");
             return;
         }
 
         try {
             while (true) {
-                OutputStream output = socket.getOutputStream();
-                InputStream in = socket.getInputStream();
                 ObjectList request = ObjectList.newBuilder()
                         .addAllObjects(IntStream.range(0, 100).boxed()
                                 .map(i -> Object.newBuilder().setX(Math.random()).build())
                                 .toList())
                         .build();
-                // send deserialized object to server
-                byte[] bytes = request.toByteArray();
-                output.write(bytes);
-                // get response from server
-                byte[] recvBytes = new byte[8192];
-                int recvSize = in.read(recvBytes);
-                byte[] message_recv_bytes = Arrays.copyOfRange(recvBytes, 0, recvSize);
-                // デシリアル化する
-                ObjectList message_recv = ObjectList.parseFrom(message_recv_bytes);
-                System.out.println(message_recv);
+                ObjectList response = socketTranspoter.getSortedObjectList(request);
+                System.out.println(response);
                 Thread.sleep(1000);
             }
         } catch (InterruptedException ex) {
             System.out.println("Interrupted: " + ex.getMessage());
-        } catch (UnknownHostException ex) {
-            System.out.println("Server not found: " + ex.getMessage());
-        } catch (IOException ex) {
-            System.out.println("I/O error: " + ex.getMessage());
+        } catch (Exception ex) {
+            System.out.println("Exception: " + ex.getMessage());
         } finally {
             try {
-                socket.close();
-            } catch (IOException ex) {
-                System.out.println("I/O error: " + ex.getMessage());
+                socketTranspoter.close();
+            } catch (Exception ex) {
+                System.out.println("Exception: " + ex.getMessage());
             }
         }
     }
