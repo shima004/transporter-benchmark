@@ -54,7 +54,7 @@ class InetServer(BlockingServerBase):
         # sorting the list
         message_resp = ObjectList()
         message_resp.objects.extend(
-            sorted(message_recv.objects, key=lambda x: x.x)
+            message_recv.objects,
         )
         # data serialization using protocol buffer
         return message_resp.SerializeToString()
@@ -75,7 +75,7 @@ class UnixDomainServer(BlockingServerBase):
         # sorting the list
         message_resp = ObjectList()
         message_resp.objects.extend(
-            sorted(message_recv.objects, key=lambda x: x.x)
+            message_recv.objects,
         )
         # data serialization using protocol buffer
         return message_resp.SerializeToString()

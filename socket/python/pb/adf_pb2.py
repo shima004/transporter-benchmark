@@ -19,8 +19,8 @@ _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'adf_pb2', _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
-  _globals['DESCRIPTOR']._options = None
-  _globals['DESCRIPTOR']._serialized_options = b'\n\025com.proto.transporterP\001'
+  DESCRIPTOR._options = None
+  DESCRIPTOR._serialized_options = b'\n\025com.proto.transporterP\001'
   _globals['_OBJECT']._serialized_start=13
   _globals['_OBJECT']._serialized_end=32
   _globals['_OBJECTLIST']._serialized_start=34

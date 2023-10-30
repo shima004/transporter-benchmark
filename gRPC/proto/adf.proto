@@ -12,5 +12,5 @@ message ObjectList {
 }
 
 service CallPython {
-  rpc GetSortedObjects(ObjectList) returns (ObjectList) {}
+  rpc GetEcho(ObjectList) returns (ObjectList) {}
 }

@@ -52,7 +52,7 @@ jmh {
     jmhVersion = '1.36'
     fork = 1
     iterations = 5
-    warmupIterations = 1
+    warmupIterations = 0
 }
 
 protobuf {

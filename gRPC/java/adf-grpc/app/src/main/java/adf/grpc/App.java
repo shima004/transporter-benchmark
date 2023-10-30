@@ -12,7 +12,7 @@ public class App {
       return Object.newBuilder().setX(x).build();
     }).toList();
     ObjectList request = ObjectList.newBuilder().addAllObjects(requestList).build();
-    ObjectList response = app.getSortedObjects(request);
+    ObjectList response = app.getEcho(request);
     System.out.println(response);
   }
 }

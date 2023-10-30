@@ -1,9 +1,13 @@
 package adf.socket;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
 import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.Mode;
+import org.openjdk.jmh.annotations.OutputTimeUnit;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
@@ -33,7 +37,9 @@ public class UnixDomainSocketBenchmarkTest {
   }
 
   @Benchmark
-  public void testBenchmark() {
+  @BenchmarkMode({ Mode.AverageTime })
+  @OutputTimeUnit(TimeUnit.MICROSECONDS)
+  public void benchmarkUnixDomainSocket() {
     try {
       socketTranspoter.getSortedObjectList(testObjectList);
     } catch (Exception e) {

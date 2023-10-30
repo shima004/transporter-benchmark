@@ -14,8 +14,8 @@ class CallPythonStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.GetSortedObjects = channel.unary_unary(
-                '/CallPython/GetSortedObjects',
+        self.GetEcho = channel.unary_unary(
+                '/CallPython/GetEcho',
                 request_serializer=adf__pb2.ObjectList.SerializeToString,
                 response_deserializer=adf__pb2.ObjectList.FromString,
                 )
@@ -24,7 +24,7 @@ class CallPythonStub(object):
 class CallPythonServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def GetSortedObjects(self, request, context):
+    def GetEcho(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -33,8 +33,8 @@ class CallPythonServicer(object):
 
 def add_CallPythonServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'GetSortedObjects': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetSortedObjects,
+            'GetEcho': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetEcho,
                     request_deserializer=adf__pb2.ObjectList.FromString,
                     response_serializer=adf__pb2.ObjectList.SerializeToString,
             ),
@@ -49,7 +49,7 @@ class CallPython(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def GetSortedObjects(request,
+    def GetEcho(request,
             target,
             options=(),
             channel_credentials=None,
@@ -59,7 +59,7 @@ class CallPython(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/CallPython/GetSortedObjects',
+        return grpc.experimental.unary_unary(request, target, '/CallPython/GetEcho',
             adf__pb2.ObjectList.SerializeToString,
             adf__pb2.ObjectList.FromString,
             options, channel_credentials,

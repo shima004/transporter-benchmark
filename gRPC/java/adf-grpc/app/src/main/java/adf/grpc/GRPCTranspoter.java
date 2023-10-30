@@ -21,8 +21,8 @@ public class GRPCTranspoter {
         }).toList();
     }
 
-    public ObjectList getSortedObjects(ObjectList request) {
-        return stub.getSortedObjects(request);
+    public ObjectList getEcho(ObjectList request) {
+        return stub.getEcho(request);
     }
 
     @Override

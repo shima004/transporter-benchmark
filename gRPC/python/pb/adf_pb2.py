@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\tadf.proto\"\x13\n\x06Object\x12\t\n\x01x\x18\x01 \x01(\x01\"&\n\nObjectList\x12\x18\n\x07objects\x18\x01 \x03(\x0b\x32\x07.Object2<\n\nCallPython\x12.\n\x10GetSortedObjects\x12\x0b.ObjectList\x1a\x0b.ObjectList\"\x00\x42\x19\n\x15\x63om.proto.transporterP\x01\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\tadf.proto\"\x13\n\x06Object\x12\t\n\x01x\x18\x01 \x01(\x01\"&\n\nObjectList\x12\x18\n\x07objects\x18\x01 \x03(\x0b\x32\x07.Object23\n\nCallPython\x12%\n\x07GetEcho\x12\x0b.ObjectList\x1a\x0b.ObjectList\"\x00\x42\x19\n\x15\x63om.proto.transporterP\x01\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -26,5 +26,5 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _globals['_OBJECTLIST']._serialized_start=34
   _globals['_OBJECTLIST']._serialized_end=72
   _globals['_CALLPYTHON']._serialized_start=74
-  _globals['_CALLPYTHON']._serialized_end=134
+  _globals['_CALLPYTHON']._serialized_end=125
 # @@protoc_insertion_point(module_scope)

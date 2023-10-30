@@ -9,14 +9,14 @@ import com.proto.transporter.Object;
 import com.proto.transporter.ObjectList;
 
 import adf.socket.transpoter.BaseSocketTranspoter;
-import adf.socket.transpoter.UnixDomainSocketTranspoter;
+import adf.socket.transpoter.InetSocketTranspoter;
 
 public class App {
     public static void main(String[] args) {
         BaseSocketTranspoter socketTranspoter = null;
         try {
-            // socketTranspoter = new InetSocketTranspoter("localhost", 8080);
-            socketTranspoter = new UnixDomainSocketTranspoter("/tmp/socket.sock");
+            socketTranspoter = new InetSocketTranspoter("localhost", 8080);
+            // socketTranspoter = new UnixDomainSocketTranspoter("/tmp/socket.sock");
         } catch (Exception e) {
             System.out.println(e);
         }
