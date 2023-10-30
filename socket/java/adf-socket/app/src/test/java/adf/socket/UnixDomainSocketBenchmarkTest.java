@@ -12,15 +12,17 @@ import org.openjdk.jmh.annotations.TearDown;
 import com.proto.transporter.Object;
 import com.proto.transporter.ObjectList;
 
+import adf.socket.transpoter.UnixDomainSocketTranspoter;
+
 @State(Scope.Benchmark)
-public class BenchmarkTest {
-  private SocketTranspoter socketTranspoter;
+public class UnixDomainSocketBenchmarkTest {
+  private UnixDomainSocketTranspoter socketTranspoter;
   private ObjectList testObjectList;
 
   @Setup
   public void setup() {
     try {
-      socketTranspoter = new SocketTranspoter("localhost", 8080);
+      socketTranspoter = new UnixDomainSocketTranspoter("/tmp/socket.sock");
     } catch (Exception e) {
       e.printStackTrace();
     }

@@ -8,12 +8,15 @@ import java.util.stream.IntStream;
 import com.proto.transporter.Object;
 import com.proto.transporter.ObjectList;
 
+import adf.socket.transpoter.BaseSocketTranspoter;
+import adf.socket.transpoter.UnixDomainSocketTranspoter;
+
 public class App {
     public static void main(String[] args) {
         BaseSocketTranspoter socketTranspoter = null;
         try {
-            socketTranspoter = new SocketTranspoter("localhost", 8080);
-            // socketTranspoter = new UnixDomainSocketTranspoter("/tmp/socket.sock");
+            // socketTranspoter = new InetSocketTranspoter("localhost", 8080);
+            socketTranspoter = new UnixDomainSocketTranspoter("/tmp/socket.sock");
         } catch (Exception e) {
             System.out.println(e);
         }

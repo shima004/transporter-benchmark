@@ -29,6 +29,8 @@ dependencies {
 
     implementation 'com.google.protobuf:protobuf-java:3.24.0'
 
+    implementation 'commons-net:commons-net:3.10.0'
+
     testImplementation 'org.openjdk.jmh:jmh-core:1.36'
     testImplementation 'org.openjdk.jmh:jmh-generator-annprocess:1.36'
 }
