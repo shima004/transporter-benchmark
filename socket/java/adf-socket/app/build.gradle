@@ -48,7 +48,7 @@ tasks.named('test') {
 jmh {
     jmhVersion = '1.36'
     fork = 1
-    iterations = 2
+    iterations = 5
     warmupIterations = 1
 }
 
