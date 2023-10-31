@@ -1,2 +1,2 @@
 Benchmark                                                 Mode  Cnt  Score   Error  Units
-DefaultTranspoterBenchmarkTest.benchmarkDefaultTransport  avgt    5  0.627 ± 0.022  ns/op
+DefaultTranspoterBenchmarkTest.benchmarkDefaultTransport  avgt    5  0.444 ± 0.016  ns/op

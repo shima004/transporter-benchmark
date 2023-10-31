@@ -27,6 +27,8 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 # install openjdk-17
 RUN apt-get install -y openjdk-17-jdk
 
+RUN apt-get install -y smem --fix-missing
+
 COPY . /app
 
 RUN chmod +x /app/benchmark.sh
