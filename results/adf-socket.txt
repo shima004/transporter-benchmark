@@ -1,0 +1,3 @@
+Benchmark                                                Mode  Cnt    Score   Error  Units
+InetSocketBenchmarkTest.benchmarkInetSocket              avgt    5   96.979 ± 1.313  us/op
+UnixDomainSocketBenchmarkTest.benchmarkUnixDomainSocket  avgt    5  130.763 ± 2.468  us/op

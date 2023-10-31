@@ -1,17 +1,11 @@
 from concurrent import futures
 
 import grpc
-
 from pb import adf_pb2, adf_pb2_grpc
-
-count = 0
 
 
 class CallPython(adf_pb2_grpc.CallPythonServicer):
     def GetEcho(self, request, context):
-        global count
-        count += 1
-        print(f"Received {count} requests")
         return adf_pb2.ObjectList(objects=request.objects)
 
 

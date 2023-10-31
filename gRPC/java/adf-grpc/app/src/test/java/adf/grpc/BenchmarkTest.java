@@ -38,7 +38,7 @@ public class BenchmarkTest {
   @Benchmark
   @BenchmarkMode({ Mode.AverageTime })
   @OutputTimeUnit(TimeUnit.MICROSECONDS)
-  public void benchmarkGetSortedObjects() {
+  public void benchmarkGRPC() {
     grpcTranspoter.getEcho(testObjectList);
   }
 }

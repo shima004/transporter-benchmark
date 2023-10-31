@@ -16,9 +16,21 @@ RUN git clone https://github.com/pyenv/pyenv.git $PYENV_ROOT && \
     pyenv install 3.12.0 && \
     pyenv global 3.12.0
 
-# # install poetry
-# RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
-# ENV PATH /root/.poetry/bin:$PATH
+# install poetry
+RUN curl -sSL https://install.python-poetry.org | python -
+ENV PATH /root/.local/bin:$PATH
 
+# Set the timezone
+ENV TZ=Asia/Tokyo
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
+# install openjdk-17
+RUN apt-get install -y openjdk-17-jdk
+
+COPY . /app
+
+RUN chmod +x /app/benchmark.sh
+
+WORKDIR /app
+CMD [ "./benchmark.sh" ]
 
