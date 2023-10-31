@@ -23,20 +23,20 @@ public class InetSocketTranspoter extends BaseSocketTranspoter {
 
   public ObjectList getSortedObjectList(ObjectList request) throws Exception {
     try {
-      // オブジェクトを送信するためのストリームを作成
+      // create output stream
       OutputStream outputStream = socket.getOutputStream();
 
-      // オブジェクトを送信
+      // send request
       outputStream.write(request.toByteArray());
 
-      // オブジェクトを受信するためのストリームを作成
+      // create input stream
       InputStream inputStream = socket.getInputStream();
 
-      // オブジェクトを受信
+      // receive response
       byte[] recvBytes = new byte[8192];
       int recvSize = inputStream.read(recvBytes);
       byte[] message_recv_bytes = Arrays.copyOfRange(recvBytes, 0, recvSize);
-      // デシリアル化する
+      // parse response
       ObjectList message_recv = ObjectList.parseFrom(message_recv_bytes);
       return message_recv;
     } catch (Exception e) {

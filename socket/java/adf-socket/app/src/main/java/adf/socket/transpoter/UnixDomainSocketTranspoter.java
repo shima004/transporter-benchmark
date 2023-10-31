@@ -35,14 +35,7 @@ public class UnixDomainSocketTranspoter extends BaseSocketTranspoter {
 
   public ObjectList getSortedObjectList(ObjectList request) throws Exception {
     try {
-      // オブジェクトを送信
       socketChannel.write(ByteBuffer.wrap(request.toByteArray()));
-
-      // オブジェクトを受信
-      // byte[] recvBytes = new byte[8192];
-      // int recvSize = inputStream.read(recvBytes);
-      // byte[] message_recv_bytes = Arrays.copyOfRange(recvBytes, 0, recvSize);
-      // ObjectList response = ObjectList.parseFrom(message_recv_bytes);
       ByteBuffer buffer = ByteBuffer.allocate(8192);
       socketChannel.read(buffer);
       buffer.flip();
