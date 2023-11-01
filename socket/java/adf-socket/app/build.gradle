@@ -46,6 +46,7 @@ tasks.named('test') {
 }
 
 jmh {
+    includes = System.getProperty("jmh.includes", ".*").split(',').toList()
     jmhVersion = '1.36'
     fork = 1
     iterations = 5

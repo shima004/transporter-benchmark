@@ -1,0 +1,2 @@
+Benchmark                                                Mode  Cnt    Score    Error  Units
+UnixDomainSocketBenchmarkTest.benchmarkUnixDomainSocket  avgt    5  107.428 ± 12.488  us/op

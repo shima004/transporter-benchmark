@@ -29,6 +29,8 @@ RUN apt-get install -y openjdk-17-jdk
 
 RUN apt-get install -y smem --fix-missing
 
+RUN apt-get install -y bc
+
 COPY . /app
 
 RUN chmod +x /app/benchmark.sh
