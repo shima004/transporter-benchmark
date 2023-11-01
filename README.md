@@ -17,20 +17,17 @@
 
 ## Implementation
 
-長さ 100 の double 配列を java から python に送信し、python で受け取った配列をソートして java に返す。
+長さ 100 の double 配列を java から python に送信し、そのまま返す。
 
 ## Benchmark(benchmark by jmh)
 
-### gRPC(wsl2)
+### Run Benchmark
 
-```
-Benchmark                     Mode  Cnt     Score     Error  Units
-BenchmarkTest.testBenchmark  thrpt    5  2043.647 ± 256.875  ops/s
+```bash
+docker build -t benchmark.
+docker run --rm -v results:/app/results -it benchmark
 ```
 
-### socket(
+### Benchmark Result
 
-```
-Benchmark                     Mode  Cnt     Score      Error  Units
-BenchmarkTest.testBenchmark  thrpt    5  6648.435 ± 1165.103  ops/s
-```
+[Benchmark Result](./results/)
