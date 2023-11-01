@@ -1,2 +1,0 @@
-Benchmark                    Mode  Cnt    Score     Error  Units
-BenchmarkTest.benchmarkGRPC  avgt    5  528.682 ± 632.585  us/op

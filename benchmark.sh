@@ -10,7 +10,7 @@ function monitor() {
     else
         local log_file="/app/results/$1-all-memory.csv"
     fi
-    echo "Python Memory Usage,Java Memory Usage" > $log_file
+    echo "Python Memory Usage,Java Memory Usage,Python CPU Usage,Java CPU Usage" > $log_file
     while true; do
         local python_memory=$(calc_memory python)
         local java_memory=$(calc_memory java)
