@@ -1,4 +1,4 @@
-package adf.socket;
+package adf.grpc;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -16,43 +16,29 @@ import org.openjdk.jmh.annotations.TearDown;
 import com.proto.transporter.Object;
 import com.proto.transporter.ObjectList;
 
-import adf.socket.transpoter.UnixDomainSocketTranspoter;
-
 @State(Scope.Benchmark)
-public class UnixDomainSocketBenchmarkTest {
-  private UnixDomainSocketTranspoter socketTranspoter;
+public class GRPCTranspoterBenchmarkTest {
+  private GRPCTranspoter grpcTranspoter;
   private ObjectList testObjectList;
 
   @Setup
   public void setup() {
-    try {
-      socketTranspoter = new UnixDomainSocketTranspoter("/tmp/socket.sock");
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    grpcTranspoter = new GRPCTranspoter();
     List<Object> requestList = IntStream.range(0, 100).mapToObj(i -> {
       return Object.newBuilder().setX(Math.random()).build();
     }).toList();
     testObjectList = ObjectList.newBuilder().addAllObjects(requestList).build();
   }
 
+  @TearDown
+  public void teardown() {
+    grpcTranspoter.channel.shutdown();
+  }
+
   @Benchmark
   @BenchmarkMode({ Mode.AverageTime })
   @OutputTimeUnit(TimeUnit.MICROSECONDS)
-  public void benchmarkUnixDomainSocket() {
-    try {
-      socketTranspoter.getSortedObjectList(testObjectList);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
-
-  @TearDown
-  public void tearDown() {
-    try {
-      socketTranspoter.close();
-    } catch (Exception e) {
-      // pass
-    }
+  public void averageTimeBenchmark() {
+    grpcTranspoter.getEcho(testObjectList);
   }
 }

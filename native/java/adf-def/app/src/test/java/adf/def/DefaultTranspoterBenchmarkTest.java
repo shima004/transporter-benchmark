@@ -19,7 +19,7 @@ public class DefaultTranspoterBenchmarkTest {
   @Benchmark
   @BenchmarkMode({ Mode.AverageTime })
   @OutputTimeUnit(TimeUnit.NANOSECONDS)
-  public void benchmarkDefaultTransport() {
+  public void averageTimeBenchmark() {
     transport.getEcho(input);
   }
 }

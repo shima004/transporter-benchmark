@@ -19,7 +19,7 @@ import com.proto.transporter.ObjectList;
 import adf.socket.transpoter.InetSocketTranspoter;
 
 @State(Scope.Benchmark)
-public class InetSocketBenchmarkTest {
+public class InetSocketTranspoterBenchmarkTest {
   private InetSocketTranspoter socketTranspoter;
   private ObjectList testObjectList;
 
@@ -39,7 +39,7 @@ public class InetSocketBenchmarkTest {
   @Benchmark
   @BenchmarkMode({ Mode.AverageTime })
   @OutputTimeUnit(TimeUnit.MICROSECONDS)
-  public void benchmarkInetSocket() {
+  public void averageTimeBenchmark() {
     try {
       socketTranspoter.getSortedObjectList(testObjectList);
     } catch (Exception e) {
