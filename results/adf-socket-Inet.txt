@@ -1,2 +1,2 @@
-Benchmark                                    Mode  Cnt    Score   Error  Units
-InetSocketBenchmarkTest.benchmarkInetSocket  avgt    5  100.074 ± 2.488  us/op
+Benchmark                                               Mode  Cnt   Score   Error  Units
+InetSocketTranspoterBenchmarkTest.averageTimeBenchmark  avgt    5  88.048 ± 1.312  us/op

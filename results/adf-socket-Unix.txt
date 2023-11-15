@@ -1,2 +1,2 @@
-Benchmark                                                Mode  Cnt   Score    Error  Units
-UnixDomainSocketBenchmarkTest.benchmarkUnixDomainSocket  avgt    5  97.960 ± 18.992  us/op
+Benchmark                                                     Mode  Cnt   Score   Error  Units
+UnixDomainSocketTranspoterBenchmarkTest.averageTimeBenchmark  avgt    5  85.890 ± 2.304  us/op
