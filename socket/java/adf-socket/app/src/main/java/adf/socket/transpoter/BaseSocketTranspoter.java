@@ -16,5 +16,5 @@ public abstract class BaseSocketTranspoter {
     }
   }
 
-  public abstract ObjectList getSortedObjectList(ObjectList request) throws Exception;
+  public abstract ObjectList getEcho(ObjectList request) throws Exception;
 }

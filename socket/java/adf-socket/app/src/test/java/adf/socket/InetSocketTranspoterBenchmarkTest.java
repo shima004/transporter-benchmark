@@ -41,7 +41,7 @@ public class InetSocketTranspoterBenchmarkTest {
   @OutputTimeUnit(TimeUnit.MICROSECONDS)
   public void averageTimeBenchmark() {
     try {
-      socketTranspoter.getSortedObjectList(testObjectList);
+      socketTranspoter.getEcho(testObjectList);
     } catch (Exception e) {
       e.printStackTrace();
     }

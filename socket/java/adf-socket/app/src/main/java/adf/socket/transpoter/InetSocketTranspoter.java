@@ -21,7 +21,7 @@ public class InetSocketTranspoter extends BaseSocketTranspoter {
     }
   }
 
-  public ObjectList getSortedObjectList(ObjectList request) throws Exception {
+  public ObjectList getEcho(ObjectList request) throws Exception {
     try {
       // create output stream
       OutputStream outputStream = socket.getOutputStream();

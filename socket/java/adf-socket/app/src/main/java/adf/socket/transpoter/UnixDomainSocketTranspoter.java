@@ -33,7 +33,7 @@ public class UnixDomainSocketTranspoter extends BaseSocketTranspoter {
     }
   }
 
-  public ObjectList getSortedObjectList(ObjectList request) throws Exception {
+  public ObjectList getEcho(ObjectList request) throws Exception {
     try {
       socketChannel.write(ByteBuffer.wrap(request.toByteArray()));
       ByteBuffer buffer = ByteBuffer.allocate(8192);
