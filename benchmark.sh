@@ -68,7 +68,7 @@ function calc_cpu(){
 # @param $1: name of the benchmark
 # @param $2: name of the java project
 # @param $3: name of the benchmark method 
-function run_benchmark() {
+function run_throughput_benchmark() {
     # python server
     cd /app/$1/python
     # Install dependencies
@@ -78,10 +78,8 @@ function run_benchmark() {
 
     # java client
     cd /app/$1/java/$2
-    # Start memory monitoring in the background
-    monitor $1 $3 &
-    # Remember the PID of the monitoring process
-    local monitor_pid=$!
+
+    ./gradlew build
 
     # Run the benchmark
     if [ $# -eq 3 ]; then
@@ -100,12 +98,50 @@ function run_benchmark() {
     kill  $(ps aux | grep '[p]ython server.py' | awk '{print $2}')
     # kill java process
     kill  $(ps aux | grep '[j]ava' | awk '{print $2}')
+}
+
+function run_benchmark(){
+    # python server
+    cd /app/$1/python
+    # Install dependencies
+    poetry install
+    # Start the python server in the background
+    poetry run python server.py &
+
+    # java client
+    cd /app/$1/java/$2
+    # Build the project
+    ./gradlew build
+    # kill java process
+    kill  $(ps aux | grep '[j]ava' | awk '{print $2}')
+
+    # Start memory monitoring in the background
+    monitor $1 "${5}-performance" &
+    # Remember the PID of the monitoring process
+    local monitor_pid=$!
+
+    # Run the project with the given arguments
+    # @1: time in milliseconds
+    # @2: number of calls
+    # @3: type(optional)
+    timeout 4m ./gradlew run --args="$3 $4 $5"
+    
+    # kill python process
+    kill  $(ps aux | grep '[p]ython server.py' | awk '{print $2}')
+    # kill java process
+    kill  $(ps aux | grep '[j]ava' | awk '{print $2}')
 
     # kill memory monitoring process
     kill $monitor_pid
 }
 
-run_benchmark gRPC adf-grpc
-run_benchmark socket adf-socket Unix
-run_benchmark socket adf-socket Inet
-run_benchmark native adf-def
+run_throughput_benchmark gRPC adf-grpc
+# run_throughput_benchmark socket adf-socket Unix
+# run_throughput_benchmark socket adf-socket Inet
+# run_throughput_benchmark native adf-def
+# run_throughput_benchmark database adf-database
+
+# run_benchmark gRPC adf-grpc 1000 5000
+# run_benchmark socket adf-socket 1000 5000 Unix
+# run_benchmark socket adf-socket 1000 5000 Inet
+
