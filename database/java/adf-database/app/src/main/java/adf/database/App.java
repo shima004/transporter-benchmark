@@ -9,9 +9,8 @@ import com.proto.transporter.Object;
 import com.proto.transporter.ObjectList;
 
 public class App {
-
     public static void main(String[] args) {
-        RedisTranspoter redisTranspoter = new RedisTranspoter("localhost", 6379);
+        RedisTransporter redisTranspoter = new RedisTransporter("localhost", 6379);
         ObjectList request = ObjectList.newBuilder()
                 .addAllObjects(IntStream.range(0, 100).boxed()
                         .map(i -> Object.newBuilder().setX(Math.random()).build())

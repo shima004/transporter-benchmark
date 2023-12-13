@@ -1,7 +1,6 @@
 import base64
 
 import redis
-
 from pb.adf_pb2 import ObjectList
 
 
@@ -18,11 +17,9 @@ class RadisTranspoter:
         for item in pub.listen():
             if item["type"] != "message":
                 continue
-            print(item)
             req = ObjectList()
             data = base64.b64decode(item["data"])
             req.ParseFromString(data)
-            print(req)
             self.send(req)
 
 

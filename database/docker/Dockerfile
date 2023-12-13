@@ -1,2 +1,1 @@
-FROM radis:latest
-
+FROM redis:latest

@@ -1,10 +1,10 @@
-FROM ubuntu:20.04
+FROM --platform=linux/amd64 ubuntu:20.04
 
 # update apt
 RUN apt-get update -y && apt-get upgrade -y
 
 # install pyenv
-RUN apt-get install -y git curl wget make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev libffi-dev
+RUN apt-get install -y git curl wget make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev libffi-dev redis-server
 
 # install pyenv
 ENV PYENV_ROOT /pyenv
@@ -31,10 +31,15 @@ RUN apt-get install -y smem --fix-missing
 
 RUN apt-get install -y bc
 
+RUN rm -rf /var/lib/apt/lists/*
+
+# start redis
+# RUN redis-server --protected-mode no &
+
 COPY . /app
 
 RUN chmod +x /app/benchmark.sh
 
 WORKDIR /app
-CMD [ "./benchmark.sh" ]
-
+CMD [ "bash", "-c", "redis-server --protected-mode no & ./benchmark.sh" ]
+# CMD [ "./benchmark.sh" ]
