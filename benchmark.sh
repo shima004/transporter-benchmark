@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# constants
+FORKS=1
+WARMUP_ITERATIONS=1
+MEASUREMENT_ITERATIONS=1
+THREADS=1
 
 # Monitor the memory usage of a process
 # @param $1: name of the process 
@@ -79,20 +84,25 @@ function run_throughput_benchmark() {
     # java client
     cd /app/$1/java/$2
 
-    ./gradlew build
+    ./gradlew jmhJar
+
+    # Change the permissions of the jar file
+    chmod +x ./app/build/libs/app-jmh.jar
 
     # Run the benchmark
     if [ $# -eq 3 ]; then
-        ./gradlew jmh -Djmh.includes=$3
+        # ./gradlew jmh -Djmh.includes=$3
+        java -jar ./app/build/libs/app-jmh.jar -f $FORKS -w $WARMUP_ITERATIONS -i $MEASUREMENT_ITERATIONS -t $THREADS -o /app/results/$2-$3.txt $3
     else
-        ./gradlew jmh
-    fi
+        # ./gradlew jmh
+        java -jar ./app/build/libs/app-jmh.jar -f $FORKS -w $WARMUP_ITERATIONS -i $MEASUREMENT_ITERATIONS -t $THREADS -o /app/results/$2-all.txt
+    fi 
     # Move the results to the results folder
-    if [ $# -eq 3 ]; then
-        mv ./app/build/results/jmh/results.txt /app/results/$2-$3.txt
-    else
-        mv ./app/build/results/jmh/results.txt /app/results/$2-all.txt
-    fi
+    # if [ $# -eq 3 ]; then
+    #     mv ./app/build/results/jmh/results.txt /app/results/$2-$3.txt
+    # else
+    #     mv ./app/build/results/jmh/results.txt /app/results/$2-all.txt
+    # fi
 
     # kill python process
     kill  $(ps aux | grep '[p]ython server.py' | awk '{print $2}')
@@ -112,11 +122,15 @@ function run_benchmark(){
     cd /app/$1/java/$2
     # Build the project
     ./gradlew build
+    # Change the permissions of the jar file
+    chmod +x ./app/build/libs/app.jar
     # kill java process
     kill  $(ps aux | grep '[j]ava' | awk '{print $2}')
 
+    sleep 3
+
     # Start memory monitoring in the background
-    monitor $1 "${5}-performance" &
+    monitor $1 $5 &
     # Remember the PID of the monitoring process
     local monitor_pid=$!
 
@@ -124,7 +138,7 @@ function run_benchmark(){
     # @1: time in milliseconds
     # @2: number of calls
     # @3: type(optional)
-    timeout 4m ./gradlew run --args="$3 $4 $5"
+    java -jar ./app/build/libs/app.jar $3 $4 $5
     
     # kill python process
     kill  $(ps aux | grep '[p]ython server.py' | awk '{print $2}')
@@ -136,12 +150,12 @@ function run_benchmark(){
 }
 
 run_throughput_benchmark gRPC adf-grpc
-# run_throughput_benchmark socket adf-socket Unix
-# run_throughput_benchmark socket adf-socket Inet
-# run_throughput_benchmark native adf-def
+run_throughput_benchmark socket adf-socket Unix
+run_throughput_benchmark socket adf-socket Inet
+run_throughput_benchmark native adf-def
 # run_throughput_benchmark database adf-database
 
-# run_benchmark gRPC adf-grpc 1000 5000
-# run_benchmark socket adf-socket 1000 5000 Unix
-# run_benchmark socket adf-socket 1000 5000 Inet
+run_benchmark gRPC adf-grpc 1000 5000
+run_benchmark socket adf-socket 1000 5000 Unix
+run_benchmark socket adf-socket 1000 5000 Inet
 

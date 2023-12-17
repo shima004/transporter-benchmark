@@ -41,5 +41,4 @@ COPY . /app
 RUN chmod +x /app/benchmark.sh
 
 WORKDIR /app
-CMD [ "bash", "-c", "redis-server --protected-mode no & ./benchmark.sh" ]
-# CMD [ "./benchmark.sh" ]
+CMD [ "./benchmark.sh" ]

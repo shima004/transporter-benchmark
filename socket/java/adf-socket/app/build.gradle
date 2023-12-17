@@ -53,3 +53,15 @@ jmh {
     warmupIterations = 1
 }
 
+jar {
+    manifest {
+        attributes 'Main-Class': 'adf.socket.App'
+    }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE // 重複を許可する
+}
+
