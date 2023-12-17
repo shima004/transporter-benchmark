@@ -1,2 +1,2 @@
 Benchmark                                         Mode  Cnt    Score     Error  Units
-GRPCTranspoterBenchmarkTest.averageTimeBenchmark  avgt    5  320.313 ± 160.178  us/op
+GRPCTranspoterBenchmarkTest.averageTimeBenchmark  avgt    5  460.426 ± 100.512  us/op
