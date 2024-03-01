@@ -74,12 +74,14 @@ function calc_cpu(){
 # @param $2: name of the java project
 # @param $3: name of the benchmark method 
 function run_throughput_benchmark() {
-    # python server
-    cd /app/$1/python
-    # Install dependencies
-    poetry install
-    # Start the python server in the background
-    poetry run python server.py &
+    if [ -d /app/$1/python ]; then
+        # python server
+        cd /app/$1/python
+        # Install dependencies
+        poetry install
+        # Start the python server in the background
+        poetry run python server.py &
+    fi
 
     # java client
     cd /app/$1/java/$2
@@ -111,12 +113,15 @@ function run_throughput_benchmark() {
 }
 
 function run_benchmark(){
-    # python server
-    cd /app/$1/python
-    # Install dependencies
-    poetry install
-    # Start the python server in the background
-    poetry run python server.py &
+    if [ -d /app/$1/python ]; then
+        # python server
+        cd /app/$1/python
+        # Install dependencies
+        poetry install
+        # Start the python server in the background
+        poetry run python server.py &
+    fi
+
 
     # java client
     cd /app/$1/java/$2
@@ -153,9 +158,19 @@ run_throughput_benchmark gRPC adf-grpc
 run_throughput_benchmark socket adf-socket Unix
 run_throughput_benchmark socket adf-socket Inet
 run_throughput_benchmark native adf-def
-# run_throughput_benchmark database adf-database
+
+redis-server &
+local redis_pid=$!
+run_throughput_benchmark database adf-database
+kill $redis_pid
+
 
 run_benchmark gRPC adf-grpc 1000 5000
 run_benchmark socket adf-socket 1000 5000 Unix
 run_benchmark socket adf-socket 1000 5000 Inet
+run_benchmark native adf-def 1000 5000
 
+redis-server &
+local redis_pid=$!
+run_benchmark database adf-database 1000 5000
+kill $redis_pid
