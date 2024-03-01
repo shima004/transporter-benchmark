@@ -15,12 +15,28 @@ public class App {
                 .addAllObjects(IntStream.range(0, 100).boxed()
                         .map(i -> Object.newBuilder().setX(Math.random()).build())
                         .toList())
-                .setUuid("1234567890")
                 .build();
-        for (int i = 0; i < 100; i++) {
-            ObjectList response = redisTranspoter.getEcho(request);
-            // System.out.println("AAA Received message: " + response.toString());
-            System.out.println(i);
+        int time = args.length > 0 ? Integer.parseInt(args[0]) : 30000;
+        int count = args.length > 1 ? Integer.parseInt(args[1]) : 30000;
+        // Calculate the interval between requests in milliseconds
+        int interval = time / count;
+        for (int i = 0; i < count; i++) {
+            long start = System.currentTimeMillis();
+            try {
+                redisTranspoter.getEcho(request);
+            } catch (Exception e) {
+            }
+            long end = System.currentTimeMillis();
+            // Calculate the time taken for the request and response
+            long timeTaken = end - start;
+            // Sleep for the calculated interval before sending the next request
+            try {
+                if (interval > timeTaken) {
+                    Thread.sleep(interval - timeTaken);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         redisTranspoter.close();
     }

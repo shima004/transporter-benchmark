@@ -47,6 +47,19 @@ jmh {
     warmupIterations = 0
 }
 
+jar {
+    manifest {
+        attributes 'Main-Class': 'adf.database.App'
+    }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE // 重複を許可する
+}
+
+
 tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()

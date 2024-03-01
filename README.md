@@ -25,7 +25,7 @@
 
 ```bash
 docker build -t benchmark.
-docker run --rm -v results:/app/results -it benchmark
+docker run --rm -v ./results:/app/results -it benchmark
 ```
 
 ### Benchmark Result

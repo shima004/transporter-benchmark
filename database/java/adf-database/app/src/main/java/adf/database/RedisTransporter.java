@@ -2,6 +2,7 @@ package adf.database;
 
 import java.util.Base64;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 import com.proto.transporter.ObjectList;
@@ -43,11 +44,11 @@ public class RedisTransporter {
     }
   }
 
-  public ObjectList getEcho(ObjectList request) {
+  public ObjectList getEcho(ObjectList request) throws Exception {
     jedis.publish("request", Base64.getEncoder().encodeToString(request.toByteArray()));
     CompletableFuture<ObjectList> responseFuture = new CompletableFuture<>();
     responseRef.set(responseFuture);
-    ObjectList response = responseFuture.join();
+    ObjectList response = responseFuture.get(1, TimeUnit.SECONDS);
     return response;
   }
 

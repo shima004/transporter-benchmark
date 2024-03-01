@@ -32,12 +32,17 @@ public class RedisTransporterBenchmark {
   @TearDown
   public void teardown() {
     redisTransporter.close();
+
   }
 
   @Benchmark
   @BenchmarkMode({ org.openjdk.jmh.annotations.Mode.AverageTime })
   @OutputTimeUnit(TimeUnit.MICROSECONDS)
   public void averageTimeBenchmark() {
-    redisTransporter.getEcho(testObjectList);
+    try {
+      redisTransporter.getEcho(testObjectList);
+    } catch (Exception e) {
+
+    }
   }
 }

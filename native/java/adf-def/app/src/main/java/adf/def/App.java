@@ -9,7 +9,25 @@ import java.util.stream.IntStream;
 public class App {
     public static void main(String[] args) {
         DefaultTransport transport = new DefaultTransport();
-        List<Double> input = IntStream.range(0, 100).mapToDouble(i -> Math.random()).boxed().toList();
-        System.out.println(transport.getEcho(input));
+        List<Double> request = IntStream.range(0, 100).mapToDouble(i -> 1.0).boxed().toList();
+        int time = args.length > 0 ? Integer.parseInt(args[0]) : 30000;
+        int count = args.length > 1 ? Integer.parseInt(args[1]) : 30000;
+        // Calculate the interval between requests in milliseconds
+        int interval = time / count;
+        for (int i = 0; i < count; i++) {
+            long start = System.currentTimeMillis();
+            transport.getEcho(request);
+            long end = System.currentTimeMillis();
+            // Calculate the time taken for the request and response
+            long timeTaken = end - start;
+            // Sleep for the calculated interval before sending the next request
+            try {
+                if (interval > timeTaken) {
+                    Thread.sleep(interval - timeTaken);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
